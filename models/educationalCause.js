@@ -101,22 +101,10 @@ async function deleteEducationalCause(causeId) {
   }
 }
 
-async function getLearningResources() {
-  const query = 'SELECT currentamountdonated * suppliesdonatedperdollar AS result from educationalcausetable;';
-  try {
-    const result = await pool.query(query)
-    console.log(result.rows);
-    return result.rows;
-  } catch (error) {
-    throw error;
-  }
-}
-
 module.exports = {
   createEducationalCause,
   getAllEducationalCauses,
   getEducationalCauseByCauseId,
   updateEducationalCause,
   deleteEducationalCause,
-  getLearningResources,
 };
