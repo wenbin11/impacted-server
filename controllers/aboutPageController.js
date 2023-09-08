@@ -1,8 +1,18 @@
 const pool = require('../database');
 
+/**
+ * Fetches data for the About Page.
+ *
+ * This function retrieves various data points related to ImpactEd's initiatives,
+ * including learning resources, supporters, goals reached, and pie chart data.
+ *
+ * @returns {Object} An object containing information about learning resources,
+ * supporters, goals, and pie chart data.
+ * @throws {Error} If an error occurs while executing the database queries.
+ */
 async function getAboutPageData() {
     try {
-        // Query One
+        // Query One: Calculate total current amount donated.
         const resultOne = await pool.query(`
             SELECT 
                 SUM(currentamountdonated * suppliesdonatedperdollar) 
@@ -11,7 +21,7 @@ async function getAboutPageData() {
             FROM educationalcausetable;
         `);
         
-        // Query Two
+        // Query Two: Calculate the latest day's donation value and days difference.
         const resultTwo = await pool.query(`
             SELECT 
                 DATE_TRUNC('day', dt.donationtime) AS latestDay,
@@ -24,13 +34,13 @@ async function getAboutPageData() {
             LIMIT 1;
         `);
 
-        // Query Three
+        // Query Three: Count total supporters.
         const resultThree = await pool.query(`
             SELECT COUNT(DISTINCT userid) AS totalsupporters 
             FROM donationtable;
         `);
 
-        // Query Four
+        // Query Four: Calculate the latest day's users join and days difference.
         const resultFour = await pool.query(`
             SELECT 
                 DATE_TRUNC('day', dt.donationtime) AS latestDay,
@@ -42,7 +52,7 @@ async function getAboutPageData() {
             LIMIT 1;
         `);
 
-        // Query Five
+        // Query Five: Count the number of goals reached.
         const resultFive = await pool.query(`
             SELECT 
                 COUNT(causename) AS goalsReached
@@ -50,7 +60,7 @@ async function getAboutPageData() {
             WHERE currentamountdonated >= targetedamount;
         `);
 
-        // Query Six
+        // Query Six: Fetch the latest donation details for each goal reached.
         const resultSix = await pool.query(`
             WITH LatestDonation AS (
                 SELECT
@@ -69,11 +79,10 @@ async function getAboutPageData() {
             FROM donationtable dt 
             JOIN educationalcausetable ec ON dt.causeid = ec.causeid
             JOIN LatestDonation ld ON dt.causeid = ld.causeid AND dt.donationtime = ld.latestDonationTime
-            ORDER BY latestDay DESC
-            ;
+            ORDER BY latestDay DESC;
         `);
 
-        // Query Seven
+        // Query Seven: Calculate funding by cause type for the pie chart.
         const resultSeven = await pool.query(`
             SELECT 
               ct.typename AS causeType,
@@ -83,11 +92,13 @@ async function getAboutPageData() {
             GROUP BY ct.typeid;
         `);
 
+        // Extract data for the pie chart.
         const legend = resultSeven.rows.map(item => item.causetype);
         const data = resultSeven.rows.map(item => parseInt(item.sum));
         const pieChartData = { legend, data };
 
-        result = {
+        // Construct and return the final result object.
+        const result = {
             learningResources: {
                 count: parseInt(resultOne.rows[0].result),
                 incremented: parseInt(resultTwo.rows[0].donationvalue),
@@ -104,17 +115,28 @@ async function getAboutPageData() {
                 daysDifference: resultSix.rows[0].daysdifference,
             },
             pieChartData,
-        }
+        };
 
         return result;
     } catch (error) {
         console.error("Error executing queries:", error);
+        throw error;
     }
 }
 
+/**
+ * Fetches data for the Donation Page.
+ *
+ * This function retrieves data about educational causes that have not yet reached
+ * their funding targets. It includes cause names, target supplies, current supplies,
+ * total supporters, cause types, and image paths.
+ *
+ * @returns {Array} An array of objects containing information about educational causes.
+ * @throws {Error} If an error occurs while executing the database queries.
+ */
 async function getDonationPageData() {
     try {
-        // Query One
+        // Query One: Fetch data for educational causes that haven't reached their targets.
         const resultOne = await pool.query(`
             SELECT
                 ec.causeid AS causeid,
@@ -142,6 +164,7 @@ async function getDonationPageData() {
 
     } catch (error) {
         console.error("Error executing queries:", error);
+        throw error;
     }
 }
 

@@ -1,4 +1,4 @@
-const pool = require('./database');
+const pool = require('../database');
 
 /**
  * Creates a new user in database
@@ -11,8 +11,8 @@ const pool = require('./database');
  * @return created user data
  */
 async function createUser(username, password, email, fname, lname) {
-  const query = `INSERT INTO UserTable 
-                 (Username, Password, Email, FirstName, LastName) 
+  const query = `INSERT INTO usertable 
+                 (username, password, email, firstname, lastname) 
                  VALUES ($1, $2, $3, $4, $5) 
                  RETURNING *
                 `;
@@ -34,7 +34,7 @@ async function createUser(username, password, email, fname, lname) {
  * @return {object} The user data
  */
 async function getUserByUserId(userId) {
-  const query = 'SELECT * FROM UserTable WHERE UserID = $1';
+  const query = 'SELECT * FROM usertable WHERE userid = $1';
   const values = [userId];
 
   try {
@@ -55,9 +55,9 @@ async function getUserByUserId(userId) {
 async function updateUser(userId, updatedUser) {
   const { username, password, email, fname, lname } = updatedUser;
   const query = `
-    UPDATE UserTable 
-    SET Username = $1, Password = $2, Email = $3, FirstName = $4, LastName = $5
-    WHERE UserID = $6
+    UPDATE usertable 
+    SET username = $1, password = $2, email = $3, firstname = $4, lastname = $5
+    WHERE userid = $6
     RETURNING *
   `;
   const values = [username, password, email, fname, lname, userId];
@@ -77,7 +77,7 @@ async function updateUser(userId, updatedUser) {
  * @return {object} The deleted user data
  */
 async function deleteUser(userId) {
-  const query = 'DELETE FROM UserTable WHERE UserID = $1 RETURNING *';
+  const query = 'DELETE FROM usertable WHERE userid = $1 RETURNING *';
   const values = [userId];
 
   try {
