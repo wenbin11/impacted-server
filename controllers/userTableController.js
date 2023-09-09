@@ -46,6 +46,24 @@ async function getUserByUserId(userId) {
 }
 
 /**
+ * Retrieves a user by email from the database
+ * 
+ * @param {number} email The email of the user to retrieve
+ * @return {object} The user data
+ */
+async function getUserByEmail(email) {
+  const query = 'SELECT * FROM usertable WHERE email = $1';
+  const values = [email];
+
+  try {
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
  * Updates user information in the database by UserID
  * 
  * @param {number} userId The UserID of the user to update
@@ -92,6 +110,7 @@ async function deleteUser(userId) {
 module.exports = {
   createUser,
   getUserByUserId,
+  getUserByEmail,
   updateUser,
   deleteUser
 };

@@ -62,13 +62,13 @@ router.post('/login', [
     // Check if the user exists by email
     const user = await getUserByEmail(email);
     if (!user) {
-      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid Email' }] });
     }
 
     // Compare the provided password with the stored hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid Password' }] });
     }
 
     // Generate a JWT token
