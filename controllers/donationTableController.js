@@ -1,8 +1,8 @@
-const pool = require('../database');
+const pool = require("../database");
 
 /**
- * Create a new donation entry 
- * 
+ * Create a new donation entry
+ *
  * @param {number} userId User ID making the donation
  * @param {number} causeId Cause ID to which the donation is made
  * @param {number} amountDonated Amount donated
@@ -10,7 +10,7 @@ const pool = require('../database');
  */
 async function createDonation(userId, causeId, amountDonated) {
   const query = `
-    INSERT INTO DonationTable (UserID, CauseID, AmountDonated, DonationTime)
+    INSERT INTO donationtable (userid, causeid, amountdonated, donationtime)
     VALUES ($1, $2, $3, NOW())
     RETURNING *;
   `;
@@ -26,12 +26,12 @@ async function createDonation(userId, causeId, amountDonated) {
 
 /**
  * Retrieves all donations made by a user
- * 
+ *
  * @param {number} userId User ID to retrieve donations for
  * @return {object} The donation data
  */
 async function getDonationsByUserId(userId) {
-  const query = 'SELECT * FROM DonationTable WHERE UserID = $1';
+  const query = "SELECT * FROM DonationTable WHERE UserID = $1";
   const values = [userId];
 
   try {
@@ -43,9 +43,9 @@ async function getDonationsByUserId(userId) {
 }
 
 /**
- * Update a donation entry by its ID 
- * 
- * @param {number} donationId Donation ID to be updated 
+ * Update a donation entry by its ID
+ *
+ * @param {number} donationId Donation ID to be updated
  * @param {number} updatedAmountDonated Updated amount donated
  * @returns the updated donation data
  */
@@ -64,17 +64,17 @@ async function updateDonation(donationId, updatedAmountDonated) {
     return result.rows[0];
   } catch (error) {
     throw error;
-  } 
+  }
 }
 
 /**
- * Delete a donation entry by its ID 
- * 
- * @param {number} donationId Donation ID to be deleted 
+ * Delete a donation entry by its ID
+ *
+ * @param {number} donationId Donation ID to be deleted
  * @return the deleted donation data
  */
 async function deleteDonation(donationId) {
-  const query = 'DELETE FROM DonationTable WHERE DonationID = $1 RETURNING *;';
+  const query = "DELETE FROM DonationTable WHERE DonationID = $1 RETURNING *;";
   const values = [donationId];
   try {
     const result = await pool.query(query, values);
@@ -89,5 +89,5 @@ module.exports = {
   createDonation,
   getDonationsByUserId,
   updateDonation,
-  deleteDonation
+  deleteDonation,
 };

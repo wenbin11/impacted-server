@@ -75,7 +75,7 @@ router.post('/login', [
     const payload = { user: { id: user.userid } };
     jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.send([{token}, {userId: user.userid}]);
     });
   } catch (err) {
     console.error(err.message);
