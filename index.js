@@ -6,6 +6,7 @@ const aboutRoutes = require("./routes/aboutRoutes");
 const donationRoutes = require("./routes/donationRoutes");
 const auth = require("./routes/auth");
 const checkout = require("./routes/stripe-checkout");
+const profileRoutes = require("./routes/profileRoutes");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // My API Routes
 app.use("/", aboutRoutes);
 app.use("/", donationRoutes);
+app.use("/", profileRoutes);
 app.use("/", auth);
 app.use("/", checkout);
 
