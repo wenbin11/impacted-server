@@ -7,6 +7,7 @@ const donationRoutes = require("./routes/donationRoutes");
 const auth = require("./routes/auth");
 const checkout = require("./routes/stripe-checkout");
 const profileRoutes = require("./routes/profileRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", aboutRoutes);
 app.use("/", donationRoutes);
 app.use("/", profileRoutes);
+app.use("/", dashboardRoutes);
 app.use("/", auth);
 app.use("/", checkout);
 

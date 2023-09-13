@@ -8,6 +8,7 @@ async function getUserProfilePageData(userId) {
             SELECT
                 bt.badgename,
                 bt.badgedescription,
+                bt.img_path,
                 ut.firstname,
                 ut.lastname,
                 ut.email,
@@ -37,19 +38,18 @@ async function getUserProfilePageData(userId) {
                 dt.userid = $1;
         `;
     const values = [userId];
-    
+
     const userInfo = await getUserByUserId(userId);
     const resultOne = await pool.query(queryOne, values);
     const resultTwo = await pool.query(queryTwo, values);
 
     const results = {
-        badgeInfo: resultOne.rows,
-        pastDonations: resultTwo.rows,
-        userInfo: userInfo
-    }
+      badgeInfo: resultOne.rows,
+      pastDonations: resultTwo.rows,
+      userInfo: userInfo,
+    };
 
     return results;
-
   } catch (error) {
     console.error("Error executing queries:", error);
     throw error;
