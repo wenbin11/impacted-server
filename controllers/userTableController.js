@@ -140,7 +140,7 @@ async function updateUserDetails(userId, updatedUser) {
  * @return {object} The deleted user data
  */
 async function deleteUser(userId) {
-  const query = "DELETE FROM usertable WHERE userid = $1 RETURNING *";
+  const query = "DELETE FROM usertable WHERE userid = $1;";
   const values = [userId];
 
   try {

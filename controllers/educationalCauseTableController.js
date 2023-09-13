@@ -12,14 +12,21 @@ async function createEducationalCause(
   causeName,
   targetedAmount,
   suppliesDonatedPerDollar,
-  typeId
+  typeId,
+  image_path
 ) {
   const query = `
-      INSERT INTO educationalcausetable (causename, targetedamount, suppliesdonatedperdollar, typeid)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO educationalcausetable (causename, targetedamount, suppliesdonatedperdollar, typeid, image_path)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *;
     `;
-  const values = [causeName, targetedAmount, suppliesDonatedPerDollar, typeId];
+  const values = [
+    causeName,
+    targetedAmount,
+    suppliesDonatedPerDollar,
+    typeId,
+    image_path,
+  ];
 
   try {
     const { rows } = await pool.query(query, values);
@@ -35,7 +42,21 @@ async function createEducationalCause(
  * @return {object} The educational cause data
  */
 async function getAllEducationalCauses() {
-  const query = "SELECT * FROM educationalcausetable";
+  const query = `SELECT 
+                  ec.causeid,
+                  ec.causename,
+                  ec.targetedamount,
+                  ec.currentamountdonated,
+                  ec.suppliesdonatedperdollar,
+                  ct.typename,
+                  ec.image_path
+                FROM 
+                  educationalcausetable AS ec
+                JOIN 
+                  causetypetable as ct ON ec.typeid = ct.typeid
+                ORDER BY
+                  ec.causeid ASC;
+  `;
 
   try {
     const { rows } = await pool.query(query);
@@ -74,14 +95,13 @@ async function updateEducationalCause(causeId, updatedData) {
   const query = `
     UPDATE educationalcausetable
   SET causename = $1, targetedamount = $2, currentamountdonated = $3, suppliesdonatedperdollar = $4, typeid = $5, image_path = $6
-    WHERE causeid = $4
-    RETURNING *;
+    WHERE causeid = $7;
   `;
 
   const values = [
     updatedData.causeName,
     updatedData.targetedAmount,
-    updatedData.currentamountdonated,
+    updatedData.currentAmountDonated,
     updatedData.suppliesDonatedPerDollar,
     updatedData.typeId,
     updatedData.image_path,
@@ -128,8 +148,7 @@ async function updateDonationAmount(causeId, donatedAmount) {
  * @return the deleted educational cause data
  */
 async function deleteEducationalCause(causeId) {
-  const query =
-    "DELETE FROM educationalcausetable WHERE causeid = $1 RETURNING *;";
+  const query = "DELETE FROM educationalcausetable WHERE causeid = $1;";
   const values = [causeId];
   try {
     const result = await pool.query(query, values);

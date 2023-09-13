@@ -8,9 +8,8 @@ const pool = require('../database');
  */
 async function createCauseType(typeName) {
   const query = `
-    INSERT INTO CauseTypeTable (TypeName)
-    VALUES ($1)
-    RETURNING *;
+    INSERT INTO causetypetable (typename)
+    VALUES ($1);
   `;
   const values = [typeName];
 
@@ -28,11 +27,23 @@ async function createCauseType(typeName) {
  * @return {object} The cause type data
  */
 async function getAllCauseTypes() {
-  const query = 'SELECT * FROM CauseTypeTable';
+  const query = 'SELECT * FROM causetypetable ORDER BY typeid ASC';
 
   try {
     const { rows } = await pool.query(query);
     return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getTypeByTypeId(typeId) {
+  const query = "SELECT * FROM causetypetable WHERE typeid = $1;";
+
+  try {
+    const values = [typeId];
+    const result = await pool.query(query, values);
+    return result.rows[0];
   } catch (error) {
     throw error;
   }
@@ -47,10 +58,9 @@ async function getAllCauseTypes() {
  */
 async function updateCauseType(typeId, updatedTypeName) {
   const query = `
-    UPDATE CauseTypeTable
-    SET TypeName = $1
-    WHERE TypeID = $2
-    RETURNING *;
+    UPDATE causetypetable
+    SET typename = $1
+    WHERE typeid = $2;
   `;
 
   const values = [updatedTypeName, typeId];
@@ -70,7 +80,7 @@ async function updateCauseType(typeId, updatedTypeName) {
  * @return the deleted cause type data
  */
 async function deleteCauseType(typeId) {
-  const query = 'DELETE FROM CauseTypeTable WHERE TypeID = $1 RETURNING *;';
+  const query = 'DELETE FROM causetypetable WHERE typeid = $1;';
   const values = [typeId];
   try {
     const result = await pool.query(query, values);
@@ -85,5 +95,6 @@ module.exports = {
   createCauseType,
   getAllCauseTypes,
   updateCauseType,
+  getTypeByTypeId,
   deleteCauseType
 };
