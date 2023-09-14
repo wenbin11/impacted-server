@@ -12,8 +12,8 @@ const pool = require("../database");
  */
 async function createUser(username, password, email, fname, lname) {
   const query = `INSERT INTO usertable 
-                 (username, password, email, firstname, lastname) 
-                 VALUES ($1, $2, $3, $4, $5) 
+                 (username, password, email, firstname, lastname, date_joined) 
+                 VALUES ($1, $2, $3, $4, $5, NOW()) 
                  RETURNING *
                 `;
 
@@ -28,16 +28,13 @@ async function createUser(username, password, email, fname, lname) {
 }
 
 async function getAllUsers() {
-  const query =
-    ` SELECT 
+  const query = ` SELECT 
         userid, username, email, firstname, lastname, date_joined 
       FROM 
         usertable 
       ORDER BY 
         userid 
-      ASC;`
-    ;
-
+      ASC;`;
   try {
     const { rows } = await pool.query(query);
     return rows;
@@ -86,7 +83,7 @@ async function getUserByEmail(email) {
  * Updates user information in the database by UserID
  *
  * @param {number} userId The UserID of the user to update
- * @param {object} updatedUser An object containing the updated user information
+ * @param {string} password new password
  * @return {object} The updated user data
  */
 async function updatePassword(userId, password) {

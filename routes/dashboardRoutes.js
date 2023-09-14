@@ -54,7 +54,6 @@ router.get("/dashboard/users", async (req, res) => {
   try {
     // Call a function to retrieve data from the database
     const users = await getAllUsers();
-    console.log(users);
     res.json(users);
   } catch (error) {
     console.error(error);

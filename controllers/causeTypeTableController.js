@@ -1,8 +1,8 @@
-const pool = require('../database');
+const pool = require("../database");
 
 /**
- * Create a new cause type 
- * 
+ * Create a new cause type
+ *
  * @param {string} typeName Type name
  * @returns the new cause type data
  */
@@ -14,8 +14,8 @@ async function createCauseType(typeName) {
   const values = [typeName];
 
   try {
-    const { rows } = await pool.query(query, values);
-    return rows[0];
+    const result  = await pool.query(query, values);
+    return result.rows[0];
   } catch (error) {
     throw error;
   }
@@ -23,11 +23,11 @@ async function createCauseType(typeName) {
 
 /**
  * Retrieves all cause types from the database
- * 
+ *
  * @return {object} The cause type data
  */
 async function getAllCauseTypes() {
-  const query = 'SELECT * FROM causetypetable ORDER BY typeid ASC';
+  const query = "SELECT * FROM causetypetable ORDER BY typeid ASC";
 
   try {
     const { rows } = await pool.query(query);
@@ -50,9 +50,9 @@ async function getTypeByTypeId(typeId) {
 }
 
 /**
- * Update a cause type by its ID 
- * 
- * @param {number} typeId Cause type ID to be updated 
+ * Update a cause type by its ID
+ *
+ * @param {number} typeId Cause type ID to be updated
  * @param {string} updatedTypeName Updated type name
  * @returns the updated cause type data
  */
@@ -70,17 +70,17 @@ async function updateCauseType(typeId, updatedTypeName) {
     return result.rows[0];
   } catch (error) {
     throw error;
-  } 
+  }
 }
 
 /**
- * Delete a cause type by its ID 
- * 
- * @param {number} typeId Cause type ID to be deleted 
+ * Delete a cause type by its ID
+ *
+ * @param {number} typeId Cause type ID to be deleted
  * @return the deleted cause type data
  */
 async function deleteCauseType(typeId) {
-  const query = 'DELETE FROM causetypetable WHERE typeid = $1;';
+  const query = "DELETE FROM causetypetable WHERE typeid = $1;";
   const values = [typeId];
   try {
     const result = await pool.query(query, values);
@@ -96,5 +96,5 @@ module.exports = {
   getAllCauseTypes,
   updateCauseType,
   getTypeByTypeId,
-  deleteCauseType
+  deleteCauseType,
 };

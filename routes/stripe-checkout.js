@@ -12,7 +12,6 @@ router.post("/cause/:causeId/checkout", async (req, res) => {
   try {
     // Get data from the request body
     const { causeName, donationAmount, userId, causeId } = req.body;
-    console.log(userId);
 
     // Create a Stripe Checkout session
     const session = await stripe.checkout.sessions.create({
@@ -55,7 +54,6 @@ router.get("/success", async (req, res) => {
     // Insert the donation information into your database
     const resultOne = await createDonation(userId, causeId, donationAmount);
     const resultTwo = await updateDonationAmount(causeId, donationAmount);
-    console.log(resultOne, resultTwo);
     // Check if the donation was successfully inserted into the database
     if (resultOne && resultTwo) {
       // Render a success page or provide a success response to the client

@@ -54,7 +54,7 @@ async function getDonationsByDonationId(donationId) {
 
   try {
     const { rows } = await pool.query(query, values);
-    return rows;
+    return rows[0];
   } catch (error) {
     throw error;
   }
@@ -88,7 +88,7 @@ async function getDonationsByUserId(userId) {
 async function updateDonation(donationId, updatedAmountDonated) {
   const query = `
     UPDATE donationtable
-    SET amountDonated = $1
+    SET amountdonated = $1
     WHERE donationid = $2;
   `;
 
