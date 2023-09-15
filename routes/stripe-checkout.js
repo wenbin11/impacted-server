@@ -7,7 +7,7 @@ const {
   updateDonationAmount,
 } = require("../controllers/educationalCauseTableController");
 
-// Define a route for initiating a Stripe Checkout session
+// POST /cause/:causeId/checkout enpoint: Initiate a Stripe Checkout Session
 router.post("/cause/:causeId/checkout", async (req, res) => {
   try {
     // Get data from the request body
@@ -19,19 +19,23 @@ router.post("/cause/:causeId/checkout", async (req, res) => {
       line_items: [
         {
           price_data: {
-            currency: "sgd", // Change to your desired currency
+            currency: "sgd",
             product_data: {
               name: "ImpactEd",
               description: causeName,
             },
-            unit_amount: donationAmount * 100, // Convert donation amount to cents
+            // Convert donation amount to cents
+            unit_amount: donationAmount * 100,
           },
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: `http://localhost:8081/success?causeId=${causeId}&userId=${userId}&donationAmount=${donationAmount}`, // Redirect URL after successful payment
-      cancel_url: `http://localhost:8081/cancel?causeId=${causeId}`, // Redirect URL if the user cancels the payment
+      // Redirect URL after successful payment
+      success_url: `http://localhost:8081/success?causeId=${causeId}&userId=${userId}&donationAmount=${donationAmount}`,
+      // Redirect URL if the user cancels the payment
+      cancel_url: `http://localhost:8081/cancel?causeId=${causeId}`,
+      // Submit button text
       submit_type: "donate",
     });
 
@@ -45,21 +49,20 @@ router.post("/cause/:causeId/checkout", async (req, res) => {
   }
 });
 
-// Define a route for handling successful payments
+// GET /success endpoint: Handle successful payment
 router.get("/success", async (req, res) => {
   try {
-    // Get data from the query parameters (URL parameters)
+    // Get data from the query parameters
     const { causeId, userId, donationAmount } = req.query;
 
-    // Insert the donation information into your database
+    // Insert the donation information into database
     const resultOne = await createDonation(userId, causeId, donationAmount);
     const resultTwo = await updateDonationAmount(causeId, donationAmount);
-    // Check if the donation was successfully inserted into the database
+
     if (resultOne && resultTwo) {
-      // Render a success page or provide a success response to the client
+      // Render a success page and provide transaction details
       res.status(200).json([resultOne, resultTwo]);
     } else {
-      // Handle the case where the insertion failed
       res.status(500).send("Failed to insert donation into the database.");
     }
   } catch (error) {
@@ -68,6 +71,7 @@ router.get("/success", async (req, res) => {
   }
 });
 
+// GET /cancel endpoint: Handle error payment
 router.get("/cancel", (req, res) => {
   res.status(200).json({ message: "Payment was cancelled." });
 });

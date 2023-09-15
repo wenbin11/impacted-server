@@ -16,7 +16,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// My API Routes
+// API Routes
 app.use("/", aboutRoutes);
 app.use("/", donationRoutes);
 app.use("/", profileRoutes);

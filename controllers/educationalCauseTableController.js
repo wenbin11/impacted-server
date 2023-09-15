@@ -6,6 +6,8 @@ const pool = require("../database");
  * @param {string} causeName
  * @param {number} targetedAmount
  * @param {number} suppliesDonatedPerDollar
+ * @param {number} typeId
+ * @param {string} image_path
  * @returns the new educational cause data
  */
 async function createEducationalCause(
@@ -39,7 +41,7 @@ async function createEducationalCause(
 /**
  * Retrieves all educational causes from the database
  *
- * @return {object} The educational cause data
+ * @return {array} The educational cause data
  */
 async function getAllEducationalCauses() {
   const query = `SELECT 
@@ -117,10 +119,10 @@ async function updateEducationalCause(causeId, updatedData) {
 }
 
 /**
- * Update an educational cause by its ID
+ * Update the current amount donated by its ID
  *
  * @param {string} causeId the CauseID to be updated
- * @param {object} updatedData an object of updated values
+ * @param {number} donatedAmount the new donated amount to be added
  * @returns the updated educational cause data
  */
 async function updateDonationAmount(causeId, donatedAmount) {

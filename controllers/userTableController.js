@@ -27,6 +27,11 @@ async function createUser(username, password, email, fname, lname) {
   }
 }
 
+/**
+ * Retrieves all users from the database
+ *
+ * @return {array} The users data
+ */
 async function getAllUsers() {
   const query = ` SELECT 
         userid, username, email, firstname, lastname, date_joined 

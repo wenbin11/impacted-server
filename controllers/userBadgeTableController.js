@@ -6,7 +6,6 @@ const pool = require("../database");
  * @param {number} userId User ID
  * @param {number} badgeId Badge ID
  * @param {number} causeId Cause ID
- * @param {timestamp} achievementTime Achievement time
  * @returns the new user badge entry data
  */
 async function createUserBadge(userId, badgeId, causeId) {
@@ -27,7 +26,7 @@ async function createUserBadge(userId, badgeId, causeId) {
 /**
  * Retrieves all user badge entries from the database
  *
- * @return {object} The user badge entry data
+ * @return {array} The user badge entry data
  */
 async function getAllUserBadges() {
   const query = "SELECT * FROM userbadgetable";

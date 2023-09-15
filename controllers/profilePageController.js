@@ -1,6 +1,16 @@
 const pool = require("../database");
 const { getUserByUserId } = require("./userTableController");
 
+/**
+ * Fetches data for the User Profile Page.
+ *
+ * This function retrieves data about the user such as their past donations,
+ * their personal information and the badges they have received
+ * 
+ * @param {number} userId the user id of the user
+ * @returns {object} An object containing information about the user.
+ * @throws {Error} If an error occurs while executing the database queries.
+ */
 async function getUserProfilePageData(userId) {
   try {
     // Query One: Fetch user badge details based on their userid
@@ -39,10 +49,12 @@ async function getUserProfilePageData(userId) {
         `;
     const values = [userId];
 
+    // Execute queries
     const userInfo = await getUserByUserId(userId);
     const resultOne = await pool.query(queryOne, values);
     const resultTwo = await pool.query(queryTwo, values);
 
+    // Construct data to be returned
     const results = {
       badgeInfo: resultOne.rows,
       pastDonations: resultTwo.rows,

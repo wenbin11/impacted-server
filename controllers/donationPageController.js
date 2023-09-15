@@ -50,7 +50,8 @@ async function getDonationPageData() {
  * This function retrieves data about educational causes that have not yet reached
  * their funding targets. It includes cause names, target supplies, current supplies,
  * total supporters, cause types, and image paths.
- *
+ * 
+ * @param {number} causeId the cause id of the cause to make a payment to.
  * @returns {Array} An array of objects containing information about educational causes.
  * @throws {Error} If an error occurs while executing the database queries.
  */

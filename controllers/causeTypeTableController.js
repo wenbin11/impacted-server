@@ -1,10 +1,10 @@
 const pool = require("../database");
 
 /**
- * Create a new cause type
+ * Create a new cause type in the database
  *
  * @param {string} typeName Type name
- * @returns the new cause type data
+ * @returns {object} the new cause type data
  */
 async function createCauseType(typeName) {
   const query = `
@@ -14,7 +14,7 @@ async function createCauseType(typeName) {
   const values = [typeName];
 
   try {
-    const result  = await pool.query(query, values);
+    const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {
     throw error;
@@ -22,9 +22,9 @@ async function createCauseType(typeName) {
 }
 
 /**
- * Retrieves all cause types from the database
+ * Retrieves all badges from the database
  *
- * @return {object} The cause type data
+ * @return {object} The badge data
  */
 async function getAllCauseTypes() {
   const query = "SELECT * FROM causetypetable ORDER BY typeid ASC";
@@ -37,6 +37,12 @@ async function getAllCauseTypes() {
   }
 }
 
+/**
+ * Retrieves a cause type by their typeid from the database
+ *
+ * @param {number} typeId The id of the cause type
+ * @return {object} The badge data
+ */
 async function getTypeByTypeId(typeId) {
   const query = "SELECT * FROM causetypetable WHERE typeid = $1;";
 
@@ -54,7 +60,7 @@ async function getTypeByTypeId(typeId) {
  *
  * @param {number} typeId Cause type ID to be updated
  * @param {string} updatedTypeName Updated type name
- * @returns the updated cause type data
+ * @returns {object} the updated cause type data
  */
 async function updateCauseType(typeId, updatedTypeName) {
   const query = `
@@ -77,7 +83,7 @@ async function updateCauseType(typeId, updatedTypeName) {
  * Delete a cause type by its ID
  *
  * @param {number} typeId Cause type ID to be deleted
- * @return the deleted cause type data
+ * @return {object} the deleted cause type data
  */
 async function deleteCauseType(typeId) {
   const query = "DELETE FROM causetypetable WHERE typeid = $1;";

@@ -34,13 +34,13 @@ async function getAboutPageData() {
             LIMIT 1;
         `);
 
-        // Query Three: Count total supporters.
+        // Query Three: Get the total number of supporters.
         const resultThree = await pool.query(`
             SELECT COUNT(DISTINCT userid) AS totalsupporters 
             FROM donationtable;
         `);
 
-        // Query Four: Calculate the latest day's users join and days difference.
+        // Query Four: Get the latest day's users join and days difference.
         const resultFour = await pool.query(`
             SELECT 
                 DATE_TRUNC('day', dt.donationtime) AS latestDay,
@@ -52,7 +52,7 @@ async function getAboutPageData() {
             LIMIT 1;
         `);
 
-        // Query Five: Count the number of goals reached.
+        // Query Five: Count the total number of goals reached.
         const resultFive = await pool.query(`
             SELECT 
                 COUNT(causename) AS goalsReached
@@ -82,7 +82,7 @@ async function getAboutPageData() {
             ORDER BY latestDay DESC;
         `);
 
-        // Query Seven: Calculate funding by cause type for the pie chart.
+        // Query Seven: Calculate current amount donated by cause type for the pie chart.
         const resultSeven = await pool.query(`
             SELECT 
               ct.typename AS causeType,
@@ -119,6 +119,7 @@ async function getAboutPageData() {
 
         return result;
     } catch (error) {
+        // Log an error
         console.error("Error executing queries:", error);
         throw error;
     }

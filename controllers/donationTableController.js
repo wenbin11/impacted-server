@@ -24,6 +24,11 @@ async function createDonation(userId, causeId, amountDonated) {
   }
 }
 
+/**
+ * Retrieves all donations from the database
+ *
+ * @return {object} The donation data
+ */
 async function getAllDonations() {
   const query = `SELECT 
                     dt.donationid,
@@ -48,6 +53,12 @@ async function getAllDonations() {
   }
 }
 
+/**
+ * Retrieves a donation type by their donationid from the database
+ *
+ * @param {number} donationId The id of the donation
+ * @return {object} The donation data
+ */
 async function getDonationsByDonationId(donationId) {
   const query = "SELECT * FROM donationtable WHERE donationid = $1";
   const values = [donationId];

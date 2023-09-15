@@ -15,8 +15,9 @@ const {
 const router = express.Router();
 router.use(bodyParser.json());
 
+// GET /profile endpoint: Get user profile page data
 router.get("/profile", async (req, res) => {
-  // Get data from the query parameters (URL parameters)
+  // Get data from the query parameters
   const { userId } = req.query;
   try {
     // Call a function to retrieve data from the database
@@ -24,12 +25,17 @@ router.get("/profile", async (req, res) => {
     res.json(profileData);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error getting profile details",
+      });
   }
 });
 
+// GET /profile endpoint: Get user personal details data
 router.get("/get-profile/:userId", async (req, res) => {
-  // Get data from the query parameters (URL parameters)
+  // Get data from the query parameters
   const { userId } = req.params;
   try {
     // Call a function to retrieve data from the database
@@ -37,10 +43,13 @@ router.get("/get-profile/:userId", async (req, res) => {
     res.json(profileData);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({ error: "Internal Server Error: Error getting user details" });
   }
 });
 
+// POST /update-profile/:userId: Update user personal details
 router.post(
   "/update-profile/:userId",
   [
@@ -72,12 +81,14 @@ router.post(
       res.json("Update Success");
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res
+        .status(500)
+        .send("Server Error: Error updating user personal details");
     }
   }
 );
 
-// Define a route for updating the user's password
+// POST /reset-password/:userId endpoint: Updating the user's password
 router.post(
   "/reset-password/:userId",
   [
@@ -114,7 +125,7 @@ router.post(
       res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
       console.error("Error updating password:", error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ message: "Internal server error: Error updating password" });
     }
   }
 );

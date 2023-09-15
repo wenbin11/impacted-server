@@ -1,8 +1,17 @@
 const pool = require("../database");
 
+/**
+ * Fetches data for the Dashboard Page.
+ *
+ * This function retrieves various data points related to ImpactEd's initiatives,
+ * including line charts data and pie chart data.
+ *
+ * @returns {Object} An object containing information about line chart data and pie chart data.
+ * @throws {Error} If an error occurs while executing the database queries.
+ */
 async function getDashboardPageData() {
   try {
-    // Query One: Fetch user badge details based on their userid
+    // Query One: Fetch total donation made per day
     const queryOne = `
             SELECT 
                 DATE_TRUNC('day', donationtime) AS Date,
@@ -13,7 +22,7 @@ async function getDashboardPageData() {
                 Date;
         `;
 
-    // Query Two: Get the user past donation details
+    // Query Two: Fetch the total number of new users created each day
     const queryTwo = `
             SELECT 
                 DATE_TRUNC('day', date_joined) AS Date,
@@ -24,6 +33,7 @@ async function getDashboardPageData() {
                 Date;
         `;
 
+    // Query Three: Get the total donation made for each cause type
     const queryThree = `
         SELECT 
             ct.typename AS causeType,
@@ -33,6 +43,7 @@ async function getDashboardPageData() {
         GROUP BY ct.typeid;
     `;
 
+    // Calculate the total donated amount
     const queryFour = `
         SELECT 
             SUM(amountDonated) AS total
@@ -40,6 +51,7 @@ async function getDashboardPageData() {
             donationtable;
     `;
 
+    // Calculate the total number of donors
     const queryFive = `
         SELECT 
             Count(Distinct userid) AS total
@@ -47,12 +59,14 @@ async function getDashboardPageData() {
             usertable;
     `;
 
+    // Execute SQL queries
     const resultOne = await pool.query(queryOne);
     const resultTwo = await pool.query(queryTwo);
     const resultThree = await pool.query(queryThree);
     const resultFour = await pool.query(queryFour);
     const resultFive = await pool.query(queryFive);
 
+    // Extract data for Echarts 
     const donationDate = resultOne.rows.map((item) => item.date);
     const donationSeries = resultOne.rows.map((item) => item.total);
 
@@ -62,6 +76,7 @@ async function getDashboardPageData() {
     const typeLegend = resultThree.rows.map((item) => item.causetype);
     const typeSeries = resultThree.rows.map((item) => parseInt(item.sum));
 
+    // Construct results to be returned back to frontend
     const donationChartData = { donationDate, donationSeries };
     const supportersChartData = { supportersDate, supportersSeries };
     const pieChartData = { typeLegend, typeSeries };

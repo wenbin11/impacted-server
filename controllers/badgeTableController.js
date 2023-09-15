@@ -1,10 +1,11 @@
 const pool = require("../database.js");
 
 /**
- * Create a new badge
+ * Insert a new badge into the badge table
  *
  * @param {string} badgeName Badge name
  * @param {string} badgeDescription Badge description
+ * @param {string} img_path Image URL for the badge
  * @returns the new badge data
  */
 async function createBadge(badgeName, badgeDescription, img_path) {
@@ -25,7 +26,7 @@ async function createBadge(badgeName, badgeDescription, img_path) {
 /**
  * Retrieves all badges from the database
  *
- * @return {object} The badge data
+ * @return {Array} The badge data
  */
 async function getAllBadges() {
   const query = "SELECT * FROM badgetable ORDER BY badgeid ASC;";
@@ -38,6 +39,12 @@ async function getAllBadges() {
   }
 }
 
+/**
+ * Retrieves a badge based on their badgeid from the database
+ *
+ * @param {number} badgeId The id of the badge
+ * @return {object} The badge data
+ */
 async function getBadgeByBadgeId(badgeId) {
   const query = "SELECT * FROM badgetable WHERE badgeid = $1;";
   const values = [badgeId];
@@ -56,7 +63,8 @@ async function getBadgeByBadgeId(badgeId) {
  * @param {number} badgeId Badge ID to be updated
  * @param {string} updatedBadgeName Updated badge name
  * @param {string} updatedBadgeDescription Updated badge description
- * @returns the updated badge data
+ * @param {string} img_path Updated image path
+ * @returns {object} the updated badge data
  */
 async function updateBadge(
   badgeId,
@@ -89,7 +97,7 @@ async function updateBadge(
  * Delete a badge by its ID
  *
  * @param {number} badgeId Badge ID to be deleted
- * @return the deleted badge data
+ * @return {object} the deleted badge data
  */
 async function deleteBadge(badgeId) {
   const query = "DELETE FROM badgetable WHERE badgeid = $1 RETURNING *;";

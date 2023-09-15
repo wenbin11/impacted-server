@@ -46,7 +46,7 @@ router.get("/dashboard", async (req, res) => {
     res.json(dashboard);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error: Error retrieving dashboard data" });
   }
 });
 
@@ -57,7 +57,11 @@ router.get("/dashboard/users", async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving user table data",
+      });
   }
 });
 
@@ -69,7 +73,11 @@ router.post("/dashboard/users/delete/:userId", async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error deleting user",
+      });
   }
 });
 
@@ -80,7 +88,11 @@ router.get("/dashboard/types", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: : Error retrieving cause types table data",
+      });
   }
 });
 
@@ -92,7 +104,11 @@ router.get("/dashboard/get-type/:typeId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving type id data",
+      });
   }
 });
 
@@ -105,7 +121,11 @@ router.post("/dashboard/update-type/:typeId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error updating cause type data",
+      });
   }
 });
 
@@ -117,7 +137,11 @@ router.post("/dashboard/add-type", async (req, res) => {
     res.json("Create Donation Type Successful!");
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error creating cause type data",
+      });
   }
 });
 
@@ -129,7 +153,11 @@ router.post("/dashboard/types/delete/:typeId", async (req, res) => {
     res.json(type);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error deleting cause type data",
+      });
   }
 });
 
@@ -140,7 +168,11 @@ router.get("/dashboard/badges", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving badge table data",
+      });
   }
 });
 
@@ -152,7 +184,11 @@ router.get("/dashboard/get-badge/:badgeId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving badge id data",
+      });
   }
 });
 
@@ -170,7 +206,11 @@ router.post("/dashboard/update-badge/:badgeId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error updating badge id data",
+      });
   }
 });
 
@@ -182,7 +222,11 @@ router.post("/dashboard/add-badge", async (req, res) => {
     res.json("Create Badge Successful!");
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error creating badge data",
+      });
   }
 });
 
@@ -194,7 +238,11 @@ router.post("/dashboard/badges/delete/:badgeId", async (req, res) => {
     res.json(type);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error deleting badge data",
+      });
   }
 });
 
@@ -205,7 +253,11 @@ router.get("/dashboard/causes", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving cause table data",
+      });
   }
 });
 
@@ -217,7 +269,11 @@ router.get("/dashboard/get-cause/:causeId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving cause id data",
+      });
   }
 });
 
@@ -229,7 +285,11 @@ router.post("/dashboard/update-cause/:causeId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error updating cause id data",
+      });
   }
 });
 
@@ -248,7 +308,11 @@ router.post("/dashboard/add-cause", async (req, res) => {
     res.json("Create Cause Successful!");
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error creating cause id data",
+      });
   }
 });
 
@@ -260,7 +324,11 @@ router.post("/dashboard/causes/delete/:causeId", async (req, res) => {
     res.json(type);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error deleting cause id data",
+      });
   }
 });
 
@@ -271,7 +339,11 @@ router.get("/dashboard/donations", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving donations table data",
+      });
   }
 });
 
@@ -283,7 +355,11 @@ router.get("/dashboard/get-donation/:donationId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error retrieving donation id data",
+      });
   }
 });
 
@@ -296,7 +372,11 @@ router.post("/dashboard/update-donation/:donationId", async (req, res) => {
     res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error updating donation id data",
+      });
   }
 });
 
@@ -308,7 +388,11 @@ router.post("/dashboard/add-donation", async (req, res) => {
     res.json("Create Donation Successful!");
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error creating donation id data",
+      });
   }
 });
 
@@ -320,7 +404,11 @@ router.post("/dashboard/donations/delete/:donationId", async (req, res) => {
     res.json(type);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error: Error deleting donation id data",
+      });
   }
 });
 
